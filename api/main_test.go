@@ -139,7 +139,7 @@ func TestUpdateProduct(t *testing.T) {
 	}
 }
 
-// Creates a product, then deletes it and tries to retrieve it again
+// Expected results: 204 code, then 404 code
 func TestDeleteProduct(t *testing.T) {
 	clearTable()
 	addProducts(1)
