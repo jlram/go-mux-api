@@ -78,7 +78,7 @@ func TestCreateProduct(t *testing.T) {
 	}
 
 	// JSON unmarshal converts numbers to floats, this is the way we parse empty interfaces to int
-	if product["id"].(int) != 1 {
+	if id, ok := product["id"].(int); id != 1 && ok == false {
 		t.Errorf("Expected product ID to be '1'. Got '%v'", product["id"])
 	}
 }
@@ -99,7 +99,7 @@ func TestRetrieveProduct(t *testing.T) {
 		t.Errorf("Expected the 'name' key of the response to be set to 'Product 1'. Got '%s'", product["error"])
 	}
 
-	if product["id"].(int) != 1 {
+	if id, ok := product["id"].(int); id != 1 && ok == false {
 		t.Errorf("Expected product ID to be '1'. Got '%v'", product["id"])
 	}
 }
