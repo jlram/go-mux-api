@@ -17,7 +17,6 @@ type App struct {
 
 // Initialize --> init app
 func (a *App) Initialize(user, password, dbname string) {
-	fmt.Println(user, password, dbname)
 	connect := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
 
 	var err error
