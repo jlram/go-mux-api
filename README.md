@@ -16,4 +16,4 @@ It firstly consists in a product CRUD application, but would like to do expand i
 `docker run -it -p 5432:5432 -e POSTGRES_PASSWORD=openpgpwd -d postgres`
 
 ### Run tests
-`cd api && go test -v`
+`cd src && go test -v`
