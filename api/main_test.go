@@ -96,7 +96,7 @@ func TestRetrieveProduct(t *testing.T) {
 	json.Unmarshal(response.Body.Bytes(), &product)
 
 	if product["name"] != "Product 1" {
-		t.Errorf("Expected the 'name' key of the response to be set to 'Product 1'. Got '%s'", product["error"])
+		t.Errorf("Expected the 'name' key of the response to be set to 'Product 1'. Got '%s'", product["name"])
 	}
 
 	if id, ok := product["id"].(int); id != 1 && ok == false {
