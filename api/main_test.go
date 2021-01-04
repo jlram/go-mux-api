@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strconv"
 	"testing"
 )
 
@@ -65,20 +66,103 @@ func TestCreateProduct(t *testing.T) {
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusCreated, response.Code) // Expected: 201
 
-	var m map[string]interface{} // empty interface, any type accepted
-	json.Unmarshal(response.Body.Bytes(), &m)
+	var product map[string]interface{} // empty interface, any type accepted
+	json.Unmarshal(response.Body.Bytes(), &product)
 
-	if m["name"] != "test product" {
-		t.Errorf("Expected product name to be 'test product'. Got '%v'", m["name"])
+	if product["name"] != "test product" {
+		t.Errorf("Expected product name to be 'test product'. Got '%v'", product["name"])
 	}
 
-	if m["price"] != 11.22 {
-		t.Errorf("Expected product price to be '11.22'. Got '%v'", m["price"])
+	if product["price"] != 11.22 {
+		t.Errorf("Expected product price to be '11.22'. Got '%v'", product["price"])
 	}
 
 	// JSON unmarshal converts numbers to floats, this is the way we parse empty interfaces to int
-	if m["id"].(int) != 1 {
-		t.Errorf("Expected product ID to be '1'. Got '%v'", m["id"])
+	if product["id"].(int) != 1 {
+		t.Errorf("Expected product ID to be '1'. Got '%v'", product["id"])
+	}
+}
+
+// Expected results: 200 code, name: Product 1, id: 1
+func TestRetrieveProduct(t *testing.T) {
+	clearTable()
+	addProducts(1)
+	req, _ := http.NewRequest("GET", "product/1", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code) // Expected: 404
+
+	var product map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &product)
+
+	if product["name"] != "Product 1" {
+		t.Errorf("Expected the 'name' key of the response to be set to 'Product 1'. Got '%s'", product["error"])
+	}
+
+	if product["id"].(int) != 1 {
+		t.Errorf("Expected product ID to be '1'. Got '%v'", product["id"])
+	}
+}
+
+// Expected results: 200 code, same id, different name and price
+func TestUpdateProduct(t *testing.T) {
+	clearTable()
+	addProducts(1)
+
+	req, _ := http.NewRequest("GET", "product/1", nil)
+	response := executeRequest(req)
+
+	// gets product before updating it, for checking purposes
+	var originalProduct map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &originalProduct)
+
+	// updates product
+	var jsonStr = []byte(`{"name":"Product", "price": 55.00}`)
+	req, _ = http.NewRequest("PUT", "/product/1", bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+	response = executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+	var updatedProduct map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &updatedProduct)
+
+	if updatedProduct["id"] != originalProduct["id"] {
+		t.Errorf("Expected the id to remain the same (%v). Got %v", originalProduct["id"], updatedProduct["id"])
+	}
+
+	if updatedProduct["name"] == originalProduct["name"] {
+		t.Errorf("Expected the name to change from '%v' to '%v'. Got '%v'", originalProduct["name"], updatedProduct["name"], updatedProduct["name"])
+	}
+
+	if updatedProduct["price"] == originalProduct["price"] {
+		t.Errorf("Expected the price to change from '%v' to '%v'. Got '%v'", originalProduct["price"], updatedProduct["price"], updatedProduct["price"])
+	}
+}
+
+// Creates a product, then deletes it and tries to retrieve it again
+func TestDeleteProduct(t *testing.T) {
+	clearTable()
+	addProducts(1)
+
+	req, _ := http.NewRequest("DELETE", "product/1", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusNoContent, response.Code) // Expected 204
+
+	req, _ = http.NewRequest("GET", "product/1", nil)
+	response = executeRequest(req)
+
+	checkResponseCode(t, http.StatusNotFound, response.Code) // Expected 404
+}
+
+// Receives number of products to add, then iterates for loop and adds them
+func addProducts(count int) {
+	if count < 1 {
+		count = 1
+	}
+
+	for i := 0; i < count; i++ {
+		a.DB.Exec("INSERT INTO products(name, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
 
