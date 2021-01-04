@@ -43,7 +43,7 @@ func TestEmptyTable(t *testing.T) {
 // Expected results: 404 code and not found error message
 func TestNonExistentProduct(t *testing.T) {
 	clearTable()
-	req, _ := http.NewRequest("GET", "product/1", nil)
+	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusNotFound, response.Code) // Expected: 404
@@ -87,7 +87,7 @@ func TestCreateProduct(t *testing.T) {
 func TestRetrieveProduct(t *testing.T) {
 	clearTable()
 	addProducts(1)
-	req, _ := http.NewRequest("GET", "product/1", nil)
+	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code) // Expected: 404
@@ -109,7 +109,7 @@ func TestUpdateProduct(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
-	req, _ := http.NewRequest("GET", "product/1", nil)
+	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := executeRequest(req)
 
 	// gets product before updating it, for checking purposes
@@ -139,17 +139,17 @@ func TestUpdateProduct(t *testing.T) {
 	}
 }
 
-// Expected results: 204 code, then 404 code
+// Expected results: 204 code, then 404 code.
 func TestDeleteProduct(t *testing.T) {
 	clearTable()
 	addProducts(1)
 
-	req, _ := http.NewRequest("DELETE", "product/1", nil)
+	req, _ := http.NewRequest("DELETE", "/product/1", nil)
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusNoContent, response.Code) // Expected 204
 
-	req, _ = http.NewRequest("GET", "product/1", nil)
+	req, _ = http.NewRequest("GET", "/product/1", nil)
 	response = executeRequest(req)
 
 	checkResponseCode(t, http.StatusNotFound, response.Code) // Expected 404
