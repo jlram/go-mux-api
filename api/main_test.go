@@ -55,6 +55,7 @@ func TestNonExistentProduct(t *testing.T) {
 	}
 }
 
+// Expected results: 201 code, ID 1 and price 11.22
 func TestCreateProduct(t *testing.T) {
 	clearTable()
 	var jsonStr = []byte(`{"name":"test product", "price": 11.22}`)
@@ -75,7 +76,7 @@ func TestCreateProduct(t *testing.T) {
 		t.Errorf("Expected product price to be '11.22'. Got '%v'", m["price"])
 	}
 
-	// JSON unmarshal converts numbers to floats, this is the way we parse empty interface to int
+	// JSON unmarshal converts numbers to floats, this is the way we parse empty interfaces to int
 	if m["id"].(int) != 1 {
 		t.Errorf("Expected product ID to be '1'. Got '%v'", m["id"])
 	}
