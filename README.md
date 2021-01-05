@@ -17,3 +17,13 @@ It firstly consists in a product CRUD application, but would like to do expand i
 
 ### Run tests
 `cd src && go test -v`
+
+# Running
+
+### Option 1: Run project
+
+`go run .`
+
+### Option 2: Alternatively, generate executable file
+
+`go build`, then run /src/src.exe
