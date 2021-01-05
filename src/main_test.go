@@ -78,7 +78,7 @@ func TestCreateProduct(t *testing.T) {
 	}
 
 	// JSON unmarshal converts numbers to floats, this is the way we parse empty interfaces to int
-	if id, ok := product["id"].(int); id != 1 && ok == false {
+	if id, ok := product["id"].(int); id != 1 && ok == true {
 		t.Errorf("Expected product ID to be '1'. Got '%v'", product["id"])
 	}
 }
@@ -90,7 +90,7 @@ func TestRetrieveProduct(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := executeRequest(req)
 
-	checkResponseCode(t, http.StatusOK, response.Code) // Expected: 404
+	checkResponseCode(t, http.StatusCreated, response.Code) // Expected: 201
 
 	var product map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &product)
@@ -161,7 +161,7 @@ func addProducts(count int) {
 		count = 1
 	}
 
-	for i := 0; i < count; i++ {
+	for i := 1; i < count; i++ {
 		a.DB.Exec("INSERT INTO products(name, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
