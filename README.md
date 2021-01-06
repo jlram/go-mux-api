@@ -18,12 +18,33 @@ It firstly consists in a product CRUD application, but would like to do expand i
 ### Run tests
 `cd src && go test -v`
 
+### Output should be like this:
+
+```
+Up and running!
+=== RUN   TestEmptyTable
+--- PASS: TestEmptyTable (0.00s)
+=== RUN   TestNonExistentProduct
+--- PASS: TestNonExistentProduct (0.00s)
+=== RUN   TestCreateProduct
+--- PASS: TestCreateProduct (0.00s)
+=== RUN   TestRetrieveProduct
+--- PASS: TestRetrieveProduct (0.00s)
+=== RUN   TestUpdateProduct
+--- PASS: TestUpdateProduct (0.00s)
+--- FAIL: TestUpdateProduct (0.00s)
+=== RUN   TestDeleteProduct
+--- PASS: TestDeleteProduct (0.00s)
+PASS
+ok
+```
+
 # Running
 
 ### Option 1: Run project
 
-`go run .`
+`cd src && go run .`
 
 ### Option 2: Alternatively, generate executable file
 
-`go build`, then run /src/src.exe
+`cd src && go build`, then run /src/src.exe

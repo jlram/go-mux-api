@@ -90,11 +90,10 @@ func TestRetrieveProduct(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := executeRequest(req)
 
-	checkResponseCode(t, http.StatusCreated, response.Code) // Expected: 201
+	checkResponseCode(t, http.StatusOK, response.Code) // Expected: 200
 
 	var product map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &product)
-
 	if product["name"] != "Product 1" {
 		t.Errorf("Expected the 'name' key of the response to be set to 'Product 1'. Got '%s'", product["name"])
 	}
