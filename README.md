@@ -6,7 +6,7 @@ This is a personal project I started to improve my Go skills in a backend sense,
 - [gorilla/mux](https://github.com/gorilla/mux)
 - [squirrel](https://github.com/Masterminds/squirrel) (pending)
 - Test Driven Development (TDD)
-- Continuous Integration and Continuous Development (CI/CD)
+- Continuous Integration and Continuous Development (CI/CD) (pending)
 
 It firstly consists in a product CRUD application, but would like to do expand it in the future ([here](https://github.com/victorst79/food-scanner))
 
