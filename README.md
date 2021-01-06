@@ -18,10 +18,9 @@ It firstly consists in a product CRUD application, but would like to do expand i
 ### Run tests
 `cd src && go test -v`
 
-### Output should be like this:
+Output should be like this:
 
 ```
-Up and running!
 === RUN   TestEmptyTable
 --- PASS: TestEmptyTable (0.00s)
 === RUN   TestNonExistentProduct
@@ -36,7 +35,6 @@ Up and running!
 === RUN   TestDeleteProduct
 --- PASS: TestDeleteProduct (0.00s)
 PASS
-ok
 ```
 
 # Running
